@@ -1,6 +1,6 @@
 <template>
 <div class="header">
-    <el-button type="warning" plain class="btn">警告按钮</el-button>
+    <el-button type="warning" plain class="btn">退出登录</el-button>
     <h3 class="username">admin</h3>
 </div>
 </template>

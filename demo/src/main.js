@@ -23,6 +23,11 @@ import filter from './filter'
 for(var i in filter){
     Vue.filter(i,filter[i])
 }
+//公共组件
+import commonCom from './components/index'
+for(var i in commonCom){
+    Vue.component(i,commonCom[i])
+}
 //element-ui
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';

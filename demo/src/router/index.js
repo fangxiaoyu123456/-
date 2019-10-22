@@ -11,6 +11,7 @@ const water=()=>import('../pages/water.vue')
 const repair=()=>import('../pages/repair.vue')
 const home=()=>import('../pages/home.vue')
 const changePass=()=>import('../pages/changePass.vue')
+const welcome=()=>import('../pages/welcome.vue')
 export default new Router({
   routes: [
     {
@@ -57,8 +58,9 @@ export default new Router({
                 component:changePass
             },
             {
-                path:"",
-                redirect:"/index/manage"
+                path:'',
+                name:"welcome",
+                component:welcome
             }
         ]
     },

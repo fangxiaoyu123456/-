@@ -12,7 +12,7 @@ export default {
 <style lang='stylus' scoped>
 @import '../common/stylus/index.styl';
 .right{
-    background $color4    
+    background $color3    
     flex 1
 }
 h3{

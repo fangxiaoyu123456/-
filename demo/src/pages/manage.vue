@@ -1,15 +1,15 @@
 <template>
   <div>
-    <el-button class="btn" @click="dialogFormVisible = true">添加</el-button>
+    <el-button class="btn" @click="willAdd">添加</el-button>
     <el-dialog title="添加|修改管理员" :visible.sync="dialogFormVisible">
       <el-form :model="form">
-        <el-form-item label="账号" :label-width="formLabelWidth">
-          <el-input placeholder="请输入账号" v-model="form.name" autocomplete="off"></el-input>
+        <el-form-item  label="账号" :label-width="formLabelWidth">
+          <el-input :disabled="id!=0" placeholder="请输入账号" v-model="form.name" autocomplete="off"></el-input>
         </el-form-item>
         <el-form-item label="密码" :label-width="formLabelWidth">
-          <el-input v-model="form.pass" autocomplete="off" placeholder="请输入密码"></el-input>
+          <el-input :disabled="id!=0" v-model="form.pass" autocomplete="off" placeholder="请输入密码"></el-input>
         </el-form-item>
-        <el-form-item label="确认密码" :label-width="formLabelWidth">
+        <el-form-item v-if="id==0" label="确认密码" :label-width="formLabelWidth">
           <el-input v-model="confirm" autocomplete="off" placeholder="请输入确认密码"></el-input>
         </el-form-item>
         <el-form-item label="描述" :label-width="formLabelWidth">
@@ -17,12 +17,17 @@
         </el-form-item>
 
         <el-form-item label="时间" :label-width="formLabelWidth">
-          <el-date-picker v-model="form.time" autocomplete="off" placeholder="时间"></el-date-picker>
+          <el-date-picker v-model="form.time" autocomplete="off" placeholder="时间">
+              <template slot-scope="scope">
+                  <span>{{scope.row.time|transTime}}</span>
+              </template>
+          </el-date-picker>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false">取 消</el-button>
-        <el-button type="primary" @click="add()">添 加</el-button>
+        <el-button type="success" @click="add(0)" v-if="id==0">添 加</el-button>
+        <el-button type="success" v-if="id!=0" @click="update">修改</el-button>
       </div>
     </el-dialog>
     <!-- 表格 -->
@@ -68,6 +73,16 @@ export default {
     this.init();
   },
   methods: {
+    willAdd() {
+      this.dialogFormVisible = true;
+      this.id = 0;
+      this.form = {
+        name: "",
+        pass: "",
+        time: "",
+        des: ""
+      };
+    },
     init() {
       this.$axios({
         url: API.findManage,
@@ -93,18 +108,19 @@ export default {
             this.init();
             this.$message({
               type: "success",
-              message: "删除成功!"
+              message: res.data.info
             });
           });
         })
         .catch(() => {
           this.$message({
             type: "info",
-            message: "已取消删除"
+            message:res.data.info
           });
         });
     },
-    add() {
+    add(id) {
+      this.id = id;
       this.$axios({
         url: API.addManage,
         method: "post",
@@ -113,16 +129,54 @@ export default {
         if (res.data.isok) {
           this.init();
           this.dialogFormVisible = false;
+          this.$message({
+            message: res.data.info,
+            type: "success"
+          });
+          this.form = {
+            name: "",
+            pass: "",
+            time: "",
+            des: ""
+          };
         } else {
           this.$message({
             type: "info",
-            message: "添加失败"
+            message: res.data.info
           });
         }
       });
     },
-    handleEdit() {
+    handleEdit(id) {
+      this.id = id;
       this.dialogFormVisible = true;
+      this.$axios({
+        url: API.findManage,
+        method: "post",
+        data: {
+          id: this.id
+        }
+      }).then(res => {
+        this.form = res.data.data[0];
+      });
+    },
+    update() {
+      this.$axios({
+        url: API.updateManage,
+        method: "post",
+        data: this.form
+      }).then(res => {
+        if (res.data.isok) {
+          this.$message({
+            message: res.data.info,
+            type: "success"
+          });
+          this.init()
+          this.dialogFormVisible = false;
+        } else {
+          this.$message.error(res.data.info);
+        }
+      });
     }
   }
 };
