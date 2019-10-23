@@ -58,15 +58,19 @@ export default new Router({
                 component:changePass
             },
             {
-                path:'',
+                path:'welcome',
                 name:"welcome",
                 component:welcome
+            },
+            {
+                path:"",
+                redirect:"welcome"
             }
         ]
     },
     {
         path:"*",
-        redirect:"/index"
+        redirect:"/login"
     }
   ]
 })

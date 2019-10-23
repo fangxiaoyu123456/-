@@ -50,11 +50,17 @@ export default {
       }).then(res => {
         // console.log(res);
         if (res.data.isok) {
+            var data = JSON.parse(res.config.data)
+            // this.$store.dispatch('changeName',data.name)
+            // this.$store.dispatch('changeType',data.type)
+            sessionStorage.setItem('isName',data.name)
+            sessionStorage.setItem('isType',data.type)
           this.$message({
             message: res.data.info,
             type: "success"
           });
           this.$router.push("/index");
+
         } else {
           this.$message({
             message: res.data.info,

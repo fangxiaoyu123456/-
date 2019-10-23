@@ -63,6 +63,7 @@
             <!-- 水站评论 -->
             <el-tab-pane label="水站评论">
                 <el-select v-model="value" class="box" placeholder="请选择">
+                    <el-option label="全部" value></el-option>
                     <el-option
                         v-for="item in options"
                         :key="item.id"
@@ -87,7 +88,7 @@
                     </el-table-column>
                     <el-table-column label="操作">
                         <template slot-scope="scope">
-                            <v-del class="btn" :idx="scope.row.id"></v-del>
+                            <v-del class="btn" :idx="scope.row.id" @shanchu="delet"></v-del>
                             <!-- <v-del class="btn" :idx="scope.row.id" @shanchu='delet'></v-del> -->
                         </template>
                     </el-table-column>
@@ -137,21 +138,16 @@ export default {
             }).then(res => {
                 this.tableData = res.data.data;
                 this.options = res.data.data;
-                this.options.unshift({
-                    name:"全部",
-                    id:""
-                })  
             });
         },
         // 评论
-        init1(){
+        init1() {
             this.$axios({
-                url:API.findComment,
-                method:"get",
-            }).then(res=>{
-                this.tableData1 = res.data.data     
-                
-            })
+                url: API.findComment,
+                method: "get"
+            }).then(res => {
+                this.tableData1 = res.data.data;
+            });
         },
         del(id) {
             this.$axios({
@@ -173,6 +169,25 @@ export default {
                 .catch(err => {
                     this.$message.error(res.data.info);
                 });
+        },
+        delet(id) {
+            this.$axios({
+                url: API.delComment,
+                method: "get",
+                params: {
+                    id: id
+                }
+            }).then(res => {
+                if (res.data.isok) {
+                    this.$message({
+                        message: res.data.info,
+                        type: "success"
+                    });
+                    this.init1()
+                }else{
+                    this.$message.error(res.data.info);
+                }
+            });
         },
         add(id) {
             this.id = id;
@@ -241,19 +256,19 @@ export default {
                     }
                 })
                 .catch(err => {});
-        },
+        }
     },
-    watch:{
-        value(){
+    watch: {
+        value() {
             this.$axios({
-                url:API.findComment,
-                method:"get",
-                params:{
-                    id:this.value
+                url: API.findComment,
+                method: "get",
+                params: {
+                    waterId: this.value
                 }
-            }).then(res=>{
-                this.tableData1 = res.data.data
-            })
+            }).then(res => {
+                this.tableData1 = res.data.data;
+            });
         }
     }
 };
