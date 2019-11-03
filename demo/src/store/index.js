@@ -22,7 +22,7 @@ var actions = {
     }
 }
 var getters = {
-
+    
 }
 
 var store = new vuex.Store({

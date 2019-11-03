@@ -243,6 +243,7 @@ export default {
                         });
                         this.dialogFormVisible = false;
                         this.init();
+                        this.id=0;
                     } else {
                         this.$message.error(res.data.info);
                     }

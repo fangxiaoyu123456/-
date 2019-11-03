@@ -1,4 +1,5 @@
 const baseUrl = "/api"
+// const baseUrl = ""
 const login = baseUrl+"/login"
 const exit = baseUrl+"/exit"
 const findManage = baseUrl+"/findManage"
@@ -13,7 +14,7 @@ const addTeacherBanner = baseUrl+"/addTeacherBanner"
 const delTeacherBanner = baseUrl+"/delTeacherBanner"
 const teacherType = baseUrl+"/teacherType"
 const delTeacherType = baseUrl+"/delTeacherType"
-const addTeacherType = baseUrl+"/addTeacherType "
+const addTeacherType = baseUrl+"/addTeacherType"
 const teacherTop = baseUrl+"/teacherTop"
 const addTeacherTop = baseUrl+"/addTeacherTop"
 const delTeacherTop = baseUrl+"/delTeacherTop"
@@ -83,5 +84,4 @@ export default{
     delHomeWorker,
     getHomeType,
     updateHomeWorker
-    
 }

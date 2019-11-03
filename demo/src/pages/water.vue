@@ -3,7 +3,7 @@
         <el-tabs>
             <!-- 水站 -->
             <el-tab-pane label="水站">
-                <el-button @click="wellAdd">添加</el-button>
+                <el-button @click="wellAdd()">添加</el-button>
                 <el-dialog title="添加水站" :visible.sync="dialogFormVisible">
                     <el-form :model="form">
                         <el-form-item label="名称" :label-width="formLabelWidth">
@@ -175,7 +175,7 @@ export default {
                 url: API.delComment,
                 method: "get",
                 params: {
-                    id: id
+                    id:id
                 }
             }).then(res => {
                 if (res.data.isok) {
@@ -251,6 +251,7 @@ export default {
                         });
                         this.dialogFormVisible = false;
                         this.init();
+                        this.id=0;
                     } else {
                         this.$message.error(res.data.info);
                     }
